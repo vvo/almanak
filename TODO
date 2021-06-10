@@ -1,0 +1,42 @@
+
+Todo:
+  ☐ Best API to customize/inject events and rendering?
+    ☐ render props
+    ☐ split into Week/Day and inject this way?
+  ☐ create twitter thread/blog post on how to get holidays
+  ✔ add borders around days @done(21-06-07 15:49)
+
+  ☐ Example rendering of different events (Product support, API support) on same day, different times, with avatars & time
+
+  ☐ go full hooks and let people build the calendar themselves?
+
+  ☐ Publish wirecal, integrate it into TurnShift to show multiple schedules on a single view
+    ☐ click on an event goes into this particular schedule
+  ☐ fix mobile rendering
+
+  ☐ Calendar accepts list of countries to show holidays for
+    ☐ only in english
+    ☐ download ics, parse it, show events (https://calendar.google.com/calendar/ical/en-GB.french.official%23holiday%40group.v.calendar.google.com/public/basic.ics, https://calendar.google.com/calendar/ical/fr.french%23holiday%40group.v.calendar.google.com/public/basic.ics)
+
+  ☐ Should booking be available on all views or just monthly?
+  ☐ define data structures (schedules, events) and how they relate to teams/assignees
+  ☐ Example of booking state?
+  ☐ Click on an event opens popover with event details (remove/add people)?
+
+  ☐ add a control section which updates props from the calendar (like timezone and today)
+  ☐ design mode/viewer mode
+  ☐ monthly: click on day opens popover
+  ☐ show holidays based on timezone
+  ☐ allow to specify timezone
+  ☐ timezone change must update first day of the week
+  ☐ gray out past events
+  ☐ use object form to avoid -1 everywhere on month
+  ☐ add daily view, click on a day = daily view
+
+Archive:
+  ✔ calendar expose useCalendarState (year, month) @done(21-06-03 15:17) @project(Todo)
+  ✔ gray out days not part of the month @done(21-06-03 17:30) @project(Todo)
+  ✔ mouse wheel change month with throttle @done(21-06-03 17:30) @project(Todo)
+  ✔ calendar accepts props and then forwards them to other components via shared state @done(21-06-03 15:17) @project(Todo)
+  ✔ current day @done(21-06-03 15:09) @project(Todo)
+  ✔ prev/next @done(21-06-03 15:09) @project(Todo)
