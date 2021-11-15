@@ -36,20 +36,20 @@ const throttledHandleWheel = throttle(
   }
 );
 
-export function Calendar({ ...calendar }: CalendarState): JSX.Element {
+export function Calendar({ ...calendar }: CalendarState) {
   const [previousState, setPreviousState] = useState(calendar);
 
   console.log(calendar.__updateRequired, "coucou");
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-3 flex space-x-4 items-center">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center p-3 space-x-4">
         <TodayButton {...calendar} />
         <PrevNextNavigation {...calendar} />
         <CurrentMonthYear {...calendar} />
       </div>
       <div
-        className="flex-grow relative overflow-hidden"
+        className="overflow-hidden relative flex-grow"
         onWheel={(evt) => {
           setPreviousState(calendar);
           throttledHandleWheel(evt.deltaY, calendar);

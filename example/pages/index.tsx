@@ -1,8 +1,7 @@
-import React from "react";
-import dayjs from "dayjs";
-import { Calendar, useCalendarState } from "./components/Calendar";
+import type { NextPage } from "next";
+import { Calendar, useCalendarState } from "almanak";
 
-function App(): JSX.Element {
+const Home: NextPage = () => {
   const calendar = useCalendarState({
     month: 6,
     year: 2021,
@@ -14,10 +13,10 @@ function App(): JSX.Element {
       <Calendar {...calendar} />
     </div>
   );
-}
+};
 
-function CustomDay(day: dayjs.Dayjs): JSX.Element {
+function CustomDay(): JSX.Element {
   return <div>This text is custom</div>;
 }
 
-export default App;
+export default Home;

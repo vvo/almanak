@@ -4,16 +4,14 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { Button } from "reakit/Button";
 import { CalendarState } from "./useCalendarState";
 
-export default function PrevNextNavigation({
-  ...calendar
-}: CalendarState): JSX.Element {
+export default function PrevNextNavigation({ ...calendar }: CalendarState) {
   return (
-    <div className="space-x-2 text-gray-600 flex">
+    <div className="flex space-x-2 text-gray-600">
       <Button
         onClick={() => {
           calendar.prev();
         }}
-        className="rounded-full hover:bg-gray-100 flex items-center justify-center p-1"
+        className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
       >
         <ChevronLeftIcon className="h-5" />
       </Button>
@@ -21,7 +19,7 @@ export default function PrevNextNavigation({
         onClick={() => {
           calendar.next();
         }}
-        className="rounded-full hover:bg-gray-100 flex items-center justify-center p-1"
+        className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
       >
         <ChevronRightIcon className="h-5" />
       </Button>

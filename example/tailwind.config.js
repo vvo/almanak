@@ -1,5 +1,6 @@
 module.exports = {
-  purge: ["src/**/*.tsx"],
+  mode: "jit",
+  purge: ["./pages/**/*.tsx", "./node_modules/almanak/dist/index.js"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
@@ -8,5 +9,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  mode: "jit",
 };

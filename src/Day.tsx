@@ -10,7 +10,7 @@ export default function Day({
   day,
   isFirstWeek,
   ...calendar
-}: CalendarState & { day: dayjs.Dayjs; isFirstWeek: boolean }): JSX.Element {
+}: CalendarState & { day: dayjs.Dayjs; isFirstWeek: boolean }) {
   const grid = useGridContext();
   const isFirstDay = day.date() === 1;
   const isToday = day.isSame(dayjs(), "day");
@@ -25,7 +25,7 @@ export default function Day({
           isFirstWeek && "pt-2"
         )}
       >
-        <div className="text-center font-medium mb-1" style={textXxs}>
+        <div className="mb-1 font-medium text-center" style={textXxs}>
           {isFirstWeek && <DayName day={day} />}
           <div
             className={classNames(
