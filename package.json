@@ -13,10 +13,10 @@
     "build": "npm run build:clean && npm run build:src",
     "build:clean": "rimraf dist/",
     "build:src": "tsup src/index.tsx",
-    "dev": "",
     "format": "prettier --write '**/*.*' && eslint . --ext ts,tsx --fix",
     "lint": "tsc --noEmit && eslint --ext ts,tsx src/ && prettier --check '**/*.*'",
     "prepublishOnly": "npm run build",
+    "test": "npm run lint && (cd example && npm install && npm run build)",
     "watch": "npm run build:clean && concurrently \"npm:watch:*\"",
     "watch:src": "tsup src/index.tsx --watch src/"
   },
