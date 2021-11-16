@@ -4,12 +4,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { Button } from "reakit/Button";
 import { CalendarState } from "./useCalendarState";
 
-export default function PrevNextNavigation({ ...calendar }: CalendarState) {
+export default function PrevNextNavigation({
+  onClick,
+  ...calendar
+}: { onClick(): void } & CalendarState) {
   return (
     <div className="flex space-x-2 text-gray-600">
       <Button
         onClick={() => {
-          calendar.prev();
+          calendar.prevMonth();
+          onClick();
         }}
         className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
       >
@@ -17,7 +21,8 @@ export default function PrevNextNavigation({ ...calendar }: CalendarState) {
       </Button>
       <Button
         onClick={() => {
-          calendar.next();
+          calendar.nextMonth();
+          onClick();
         }}
         className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
       >

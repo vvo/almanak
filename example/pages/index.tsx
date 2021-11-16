@@ -3,8 +3,8 @@ import { Calendar, useCalendarState } from "almanak";
 
 const Home: NextPage = () => {
   const calendar = useCalendarState({
-    month: 6,
-    year: 2021,
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
     renderDay: CustomDay,
   });
 
@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 };
 
 function CustomDay(): JSX.Element {
-  return <div>This text is custom</div>;
+  return <div></div>;
 }
 
 export default Home;

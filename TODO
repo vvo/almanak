@@ -1,12 +1,17 @@
 
 Todo:
+  ☐ Implement on TurnShift and see all problems
+  ☐ Double think about timezones and displaying
+
+  ☐ Review items list below and choose what to do next
+
   ☐ Best API to customize/inject events and rendering?
     ☐ render props
     ☐ split into Week/Day and inject this way?
   ☐ create twitter thread/blog post on how to get holidays
-  ✔ add borders around days @done(21-06-07 15:49)
 
   ☐ Example rendering of different events (Product support, API support) on same day, different times, with avatars & time
+  ☐ dark mode
 
   ☐ go full hooks and let people build the calendar themselves?
 
@@ -34,6 +39,22 @@ Todo:
   ☐ add daily view, click on a day = daily view
 
 Archive:
+  ✔ Handle browser resize on monthly view: @done(21-11-16 23:50) @project(Todo)
+  ✔ inline day name inside the day, fix top padding @done(21-11-16 23:50) @project(Todo)
+  ✔ Weekday name should not be part of the actual day height @done(21-11-15 22:40) @project(Todo)
+  ✔ replace dayjs with luxon as this is what I'll use in production @done(21-11-16 14:39) @project(Todo)
+  ✔ (day names) first line must not be part of the cell height @done(21-11-16 22:56) @project(Todo)
+  ✔ split mobile/desktop into different trees and render them based on regular media queries @done(21-11-16 17:36) @project(Todo)
+  ✔ when on mobile, start the month at 1, not the week @done(21-11-16 17:36) @project(Todo)
+  ✔ only two modes @done(21-11-16 17:36) @project(Todo)
+  ✔ on mobile mode scroll must be on the list of days, not the whole UI (to keep buttons at the top), + deactivate scroll @done(21-11-16 22:56) @project(Todo)
+  ✔ click on today scrolls to the current day in the grid (mobile) @done(21-11-16 22:56) @project(Todo)
+  ✔ when below xl, stop using scroll for month change @done(21-11-16 22:56) @project(Todo)
+  ✔ do not add border-r when day is last day of row (use % I guess) @done(21-11-16 22:56) @project(Todo)
+  ✘ day height should be based on the screen height rather than container height (so it stays constant when resizing) @cancelled(21-11-16 22:56) @project(Todo)
+    For now this is constant
+  ✔ Gray out past days content @done(21-11-16 22:56) @project(Todo)
+  ✔ add borders around days @done(21-06-07 15:49) @project(Todo)
   ✔ calendar expose useCalendarState (year, month) @done(21-06-03 15:17) @project(Todo)
   ✔ gray out days not part of the month @done(21-06-03 17:30) @project(Todo)
   ✔ mouse wheel change month with throttle @done(21-06-03 17:30) @project(Todo)
