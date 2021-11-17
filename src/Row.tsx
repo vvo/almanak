@@ -12,13 +12,13 @@ export default function Row({
   days,
   isFirstRow,
   grid,
-  todayRef,
+  setTodayRef,
   ...calendar
 }: CalendarState & {
   days: DateTime[];
   grid: GridStateReturn;
+  setTodayRef?: boolean;
   isFirstRow: boolean;
-  todayRef?: React.RefObject<HTMLDivElement>;
 }): JSX.Element {
   return (
     <GridRow
@@ -35,7 +35,7 @@ export default function Row({
             day={day}
             key={dayIndex}
             grid={grid}
-            todayRef={todayRef}
+            setTodayRef={setTodayRef}
             {...calendar}
           />
         );

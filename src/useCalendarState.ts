@@ -1,26 +1,10 @@
 import { DateTime } from "luxon";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type RenderDay = (day: DateTime) => JSX.Element;
 
-export type CalendarState = {
-  // month: number;
-  // year: number;
-  nextMonth: () => void;
-  prevMonth: () => void;
-  /**
-   * Current day represent the year/month as a DateTime (luxon) instance.
-   * We name it `currentDay` so it does not conflicts with other props like `day`
-   * far in the tree
-   */
-  currentDay: DateTime;
-  previousDay: DateTime;
-  setCurrentDay: (date: Date) => void;
-  renderDay: RenderDay;
-  __updateRequired: boolean;
-  __updateDone: () => void;
-};
+export type CalendarState = ReturnType<typeof useCalendarState>;
 
 export function useCalendarState({
   month,
@@ -31,6 +15,9 @@ export function useCalendarState({
   year: number;
   renderDay: RenderDay;
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const todayRef = useRef<HTMLDivElement>(null);
+
   const [currentDay, setInternalCurrentDay] = useState(
     DateTime.fromObject({
       year,
@@ -45,6 +32,7 @@ export function useCalendarState({
     })
   );
   const [updateRequired, setUpdateRequired] = useState(false);
+  const [scrollToTodayRequired, setScrollToTodayRequired] = useState(false);
 
   return {
     // year,
@@ -73,9 +61,35 @@ export function useCalendarState({
       setUpdateRequired(true);
     },
     renderDay,
+    scrollToToday(async = false) {
+      if (todayRef.current) {
+        todayRef.current.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+
+      // this is needed because the todayRef will only be set when the transition is finished
+      if (async) {
+        setScrollToTodayRequired(true);
+      } else {
+        setScrollToTodayRequired(false);
+      }
+    },
+    scrollToTop() {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    },
     __updateRequired: updateRequired,
     __updateDone() {
       setUpdateRequired(false);
     },
+    __scrollRef: scrollRef,
+    __todayRef: todayRef,
+    __scrollToTodayRequired: scrollToTodayRequired,
   };
 }

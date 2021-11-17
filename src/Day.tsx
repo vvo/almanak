@@ -13,13 +13,13 @@ export default function Day({
   day,
   grid,
   isFirstRow,
-  todayRef,
+  setTodayRef,
   ...calendar
 }: CalendarState & {
   grid: GridStateReturn;
   day: DateTime;
   isFirstRow: boolean;
-  todayRef?: React.RefObject<HTMLDivElement>;
+  setTodayRef?: boolean;
 }) {
   const today = DateTime.local().startOf("day");
   const isFirstDay = day.day === 1;
@@ -34,7 +34,7 @@ export default function Day({
           "flex justify-center items-center mb-1 h-7 text-xs font-medium text-center",
           !isFirstRow && "mt-0.5"
         )}
-        ref={isToday ? todayRef : null}
+        ref={isToday && setTodayRef ? calendar.__todayRef : null}
         style={{
           scrollMarginTop: "3px",
         }}

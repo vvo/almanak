@@ -1,11 +1,12 @@
 
 Todo:
-  ☐ fix todays date being duplicated in different months (SCARY)
+  ✔ extract CSS and import it @done(21-11-17 16:46)
   ☐ Implement on TurnShift and see all problems
-  ☐ Double think about timezones and displaying
+
+  ☐ Do we need to handle timezones?
 
   ☐ Review items list below and choose what to do next
-
+===
   ☐ Best API to customize/inject events and rendering?
     ☐ render props
     ☐ split into Week/Day and inject this way?
@@ -40,6 +41,7 @@ Todo:
   ☐ add daily view, click on a day = daily view
 
 Archive:
+  ✔ fix todays date being duplicated in different months (SCARY) @done(21-11-17 11:26) @project(Todo)
   ✔ Handle browser resize on monthly view: @done(21-11-16 23:50) @project(Todo)
   ✔ inline day name inside the day, fix top padding @done(21-11-16 23:50) @project(Todo)
   ✔ Weekday name should not be part of the actual day height @done(21-11-15 22:40) @project(Todo)

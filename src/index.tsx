@@ -1,4 +1,5 @@
-import React, { RefObject, useRef, useState } from "react";
+import React from "react";
+import "tailwindcss/tailwind.css";
 
 import type { DateTime } from "luxon";
 import {
@@ -6,13 +7,11 @@ import {
   unstable_useGridState as useGridState,
 } from "reakit/Grid";
 import Row from "./Row";
-import TodayButton from "./TodayButton";
-import PrevNextNavigation from "./PrevNextNavigation";
-import CurrentMonthYear from "./CurrentMonthYear";
 import { CalendarState } from "./useCalendarState";
 import { throttle } from "throttle-debounce";
 import { Transition } from "@headlessui/react";
 import DayName from "./DayName";
+import { Navigation } from "./Navigation";
 
 export * from "./useCalendarState";
 
@@ -33,63 +32,34 @@ const throttledHandleWheel = throttle(
 );
 
 export function Calendar({ ...calendar }: CalendarState) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const todayRef = useRef<HTMLDivElement>(null);
-  const [todayButtonClicked, setTodayButtonClicked] = useState(false);
-
-  function scrollToTop() {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    }
-  }
-
-  function scrollToToday() {
-    if (todayRef.current) {
-      todayRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }
-
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center p-3 space-x-4">
-        <TodayButton
-          {...calendar}
-          onClick={() => {
-            // when we're already on the current month
-            scrollToToday();
-
-            // when we're on a different month, it will be handled by the transition end
-            setTodayButtonClicked(true);
-          }}
-        />
-        <PrevNextNavigation {...calendar} onClick={scrollToTop} />
-        <CurrentMonthYear {...calendar} />
-      </div>
+      <Navigation {...calendar} />
       <div
-        ref={scrollRef}
+        ref={calendar.__scrollRef}
         className="flex lg:overflow-hidden overflow-y-scroll relative flex-col lg:flex-grow h-full lg:h-auto"
       >
         <CalendarGrid
           {...calendar}
+          setTodayRef={true}
           currentDay={
             calendar.__updateRequired
               ? calendar.previousDay
               : calendar.currentDay
           }
-          todayRef={todayRef}
         />
         <Transition
           show={calendar.__updateRequired}
-          enter="transition transform duration-175"
-          className="flex absolute inset-0 flex-col bg-white"
+          enter="transition transform duration-300 lg:duration-150"
+          className="flex absolute inset-0 flex-col"
           enterFrom="translate-x-28 opacity-25"
           enterTo="translate-x-0 opacity-100"
           afterEnter={() => {
+            // weirdly this needs to be before others actions
             calendar.__updateDone();
-            if (todayButtonClicked) {
-              scrollToToday();
+            if (calendar.__scrollToTodayRequired) {
+              calendar.scrollToToday();
             }
-            setTodayButtonClicked(false);
           }}
         >
           <CalendarGrid {...calendar} />
@@ -100,12 +70,12 @@ export function Calendar({ ...calendar }: CalendarState) {
 }
 
 function CalendarGrid({
-  todayRef,
+  setTodayRef,
   ...calendar
-}: { todayRef?: RefObject<HTMLDivElement> } & CalendarState) {
+}: { setTodayRef?: boolean } & CalendarState) {
   return (
     <>
-      <MobileMonthlyGrid todayRef={todayRef} {...calendar} />
+      <MobileMonthlyGrid setTodayRef={setTodayRef} {...calendar} />
       <DesktopMonthlyGrid {...calendar} />
     </>
   );
@@ -120,7 +90,7 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
 
   return (
     <div
-      className="hidden lg:flex flex-col flex-grow"
+      className="hidden lg:flex flex-col flex-grow bg-white"
       onWheel={(evt) => {
         throttledHandleWheel(evt.deltaY, calendar);
       }}
@@ -146,9 +116,9 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
 }
 
 function MobileMonthlyGrid({
-  todayRef,
+  setTodayRef,
   ...calendar
-}: { todayRef?: RefObject<HTMLDivElement> } & CalendarState) {
+}: { setTodayRef?: boolean } & CalendarState) {
   const rangeStart = calendar.currentDay.startOf("month");
   const rangeEnd =
     calendar.currentDay.endOf("month").day % 2 === 1
@@ -156,13 +126,13 @@ function MobileMonthlyGrid({
       : calendar.currentDay.endOf("month");
 
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden bg-white">
       <MonthlyGrid
         colNumber={2}
         rangeStart={rangeStart}
         rangeEnd={rangeEnd}
         rowHeight="200px"
-        todayRef={todayRef}
+        setTodayRef={setTodayRef}
         {...calendar}
       />
     </div>
@@ -174,14 +144,14 @@ function MonthlyGrid({
   rangeEnd,
   colNumber,
   rowHeight,
-  todayRef,
+  setTodayRef,
   ...calendar
 }: {
   rangeStart: DateTime;
   rangeEnd: DateTime;
   colNumber: number;
   rowHeight: string;
-  todayRef?: RefObject<HTMLDivElement>;
+  setTodayRef?: boolean;
 } & CalendarState) {
   let current = rangeStart;
   const range: DateTime[][] = [[]];
@@ -215,7 +185,7 @@ function MonthlyGrid({
               days={days}
               isFirstRow={isFirstRow}
               grid={grid}
-              todayRef={todayRef}
+              setTodayRef={setTodayRef}
               {...calendar}
             />
           </div>
