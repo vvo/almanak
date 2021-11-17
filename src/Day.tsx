@@ -35,6 +35,9 @@ export default function Day({
           !isFirstRow && "mt-0.5"
         )}
         ref={isToday ? todayRef : null}
+        style={{
+          scrollMarginTop: "3px",
+        }}
       >
         <div
           className={classNames(
