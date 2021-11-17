@@ -21,10 +21,11 @@ export default function Day({
   isFirstRow: boolean;
   todayRef?: React.RefObject<HTMLDivElement>;
 }) {
+  const today = DateTime.local().startOf("day");
   const isFirstDay = day.day === 1;
-  const isToday = day.hasSame(DateTime.local(), "day");
+  const isToday = day.startOf("day").equals(today);
   const isDifferentMonth = !day.hasSame(calendar.currentDay, "month");
-  const isPast = day < DateTime.local().startOf("day");
+  const isPast = day < today;
 
   return (
     <GridCell {...grid} as="div" className="h-full">

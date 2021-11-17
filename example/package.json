@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "almanak": "^0.0.11",
+    "almanak": "latest",
     "next": "^12.0.4"
   },
   "devDependencies": {
