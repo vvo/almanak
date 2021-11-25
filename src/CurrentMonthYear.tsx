@@ -5,7 +5,7 @@ export default function CurrentMonthYear({
   ...calendar
 }: CalendarState): JSX.Element {
   return (
-    <div className="text-lg text-gray-700">
+    <div className="ak-text-gray-700 ak-text-md">
       {calendar.currentDay.toFormat("MMMM yyyy")}
     </div>
   );

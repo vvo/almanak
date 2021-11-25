@@ -12,7 +12,7 @@ export default function PrevNextNavigation({ ...calendar }: CalendarState) {
           calendar.prevMonth();
           calendar.scrollToTop();
         }}
-        className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
+        className="ak-justify-center ak-items-center ak-p-1 hover:ak-bg-gray-100 ak-rounded-full ak-flex"
       >
         <ChevronLeftIcon className="h-5" />
       </Button>
@@ -21,7 +21,7 @@ export default function PrevNextNavigation({ ...calendar }: CalendarState) {
           calendar.nextMonth();
           calendar.scrollToTop();
         }}
-        className="flex justify-center items-center p-1 hover:bg-gray-100 rounded-full"
+        className="ak-justify-center ak-items-center ak-p-1 hover:ak-bg-gray-100 ak-rounded-full ak-flex"
       >
         <ChevronRightIcon className="h-5" />
       </Button>

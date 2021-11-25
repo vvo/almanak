@@ -4,9 +4,14 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
+  prefix: "ak-",
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        xxs: ["0.6875rem", "1.125rem"], // 11px
+      },
+    },
   },
   variants: {
     extend: {},

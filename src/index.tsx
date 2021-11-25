@@ -1,5 +1,6 @@
 import React from "react";
 import "tailwindcss/tailwind.css";
+import { Transition } from "@headlessui/react";
 
 import type { DateTime } from "luxon";
 import {
@@ -8,63 +9,46 @@ import {
 } from "reakit/Grid";
 import Row from "./Row";
 import { CalendarState } from "./useCalendarState";
-import { throttle } from "throttle-debounce";
-import { Transition } from "@headlessui/react";
 import DayName from "./DayName";
-import { Navigation } from "./Navigation";
 
 export * from "./useCalendarState";
-
-// creating this throttled function at the top (hoisted) makes it easier (unecessary)
-// to deal with hooks/dependencies. And it works.
-const throttledHandleWheel = throttle(
-  150,
-  true,
-  function throttledHandleWheel(deltaY: number, calendar: CalendarState) {
-    if (deltaY > 0) {
-      calendar.nextMonth();
-    }
-
-    if (deltaY < 0) {
-      calendar.prevMonth();
-    }
-  }
-);
+export * from "./Navigation";
 
 export function Calendar({ ...calendar }: CalendarState) {
   return (
-    <div className="flex flex-col h-full">
-      <Navigation {...calendar} />
-      <div
-        ref={calendar.__scrollRef}
-        className="flex lg:overflow-hidden overflow-y-scroll relative flex-col lg:flex-grow h-full lg:h-auto"
-      >
-        <CalendarGrid
-          {...calendar}
-          setTodayRef={true}
-          currentDay={
-            calendar.__updateRequired
-              ? calendar.previousDay
-              : calendar.currentDay
-          }
-        />
-        <Transition
-          show={calendar.__updateRequired}
-          enter="transition transform duration-300 lg:duration-150"
-          className="flex absolute inset-0 flex-col"
-          enterFrom="translate-x-28 opacity-25"
-          enterTo="translate-x-0 opacity-100"
-          afterEnter={() => {
-            // weirdly this needs to be before others actions
-            calendar.__updateDone();
-            if (calendar.__scrollToTodayRequired) {
-              calendar.scrollToToday();
-            }
-          }}
-        >
-          <CalendarGrid {...calendar} />
-        </Transition>
-      </div>
+    <div
+      ref={calendar.__scrollRef}
+      className="lg:ak-overflow-hidden ak-overflow-y-scroll ak-flex-col lg:ak-flex-1 ak-h-full lg:ak-h-auto ak-flex ak-relative"
+    >
+      {calendar.fastClick === true ? (
+        <CalendarGrid setTodayRef={true} {...calendar} />
+      ) : (
+        <>
+          <Transition
+            show={!calendar.__updateRequired}
+            className="ak-z-10 ak-flex-col ak-flex-1 ak-bg-white ak-transition-opacity ak-duration-150 ak-relative ak-flex"
+            leaveFrom="ak-opacity-100"
+            leaveTo="ak-opacity-0"
+            afterLeave={() => {
+              calendar.__updateDone();
+            }}
+            unmount={false}
+          >
+            <CalendarGrid
+              {...calendar}
+              setTodayRef={true}
+              currentDay={
+                calendar.__updateRequired
+                  ? calendar.previousDay
+                  : calendar.currentDay
+              }
+            />
+          </Transition>
+          <div className="ak-inset-0 ak-flex-col ak-flex ak-absolute z-0">
+            <CalendarGrid {...calendar} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -89,13 +73,8 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
   const rowHeight = `${100 / numberOfWeeks}%`;
 
   return (
-    <div
-      className="hidden lg:flex flex-col flex-grow bg-white"
-      onWheel={(evt) => {
-        throttledHandleWheel(evt.deltaY, calendar);
-      }}
-    >
-      <div className="grid grid-cols-7 border-t divide-x">
+    <div className="ak-flex-col ak-h-full ak-hidden lg:ak-flex">
+      <div className="ak-grid-cols-7 ak-divide-x ak-grid">
         {[1, 2, 3, 4, 5, 6, 7].map((weekday, weekdayIndex) => {
           return (
             <div key={weekdayIndex}>
@@ -126,7 +105,7 @@ function MobileMonthlyGrid({
       : calendar.currentDay.endOf("month");
 
   return (
-    <div className="lg:hidden bg-white">
+    <div className="lg:ak-hidden">
       <MonthlyGrid
         colNumber={2}
         rangeStart={rangeStart}
@@ -174,13 +153,17 @@ function MonthlyGrid({
     <Grid
       {...grid}
       aria-label="Days of the month"
-      className="flex-grow border-t lg:border-t-0 divide-y"
+      className="ak-overflow-hidden ak-flex-1 ak-divide-y"
     >
       {range.map((days, rowIndex) => {
         const isFirstRow = rowIndex === 0;
 
         return (
-          <div style={{ height: rowHeight }} key={rowIndex}>
+          <div
+            style={{ height: rowHeight }}
+            className="ak-overflow-hidden"
+            key={rowIndex}
+          >
             <Row
               days={days}
               isFirstRow={isFirstRow}

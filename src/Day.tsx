@@ -28,39 +28,46 @@ export default function Day({
   const isPast = day < today;
 
   return (
-    <GridCell {...grid} as="div" className="h-full">
+    <GridCell {...grid} as="div" className="ak-flex-col ak-h-full ak-flex">
       <div
         className={classNames(
-          "flex justify-center items-center mb-1 h-7 text-xs font-medium text-center",
-          !isFirstRow && "mt-0.5"
+          "ak-flex ak-justify-center ak-items-center ak-mb-1 ak-h-7 ak-text-xs ak-font-medium ak-text-center",
+          !isFirstRow && "ak-mt-0.5"
         )}
         ref={isToday && setTodayRef ? calendar.__todayRef : null}
         style={{
-          scrollMarginTop: "3px",
+          scrollMarginTop: "2px",
         }}
       >
         <div
           className={classNames(
-            "flex items-center justify-center mx-auto",
-            isDifferentMonth && "text-gray-500"
+            "ak-flex ak-items-center ak-justify-center ak-mx-auto",
+            isDifferentMonth && "ak-text-gray-500"
           )}
         >
           {isFirstDay && (
-            <div className="hidden lg:block mr-1">{day.toFormat("MMM")}</div>
+            <div className="lg:ak-block ak-mr-1 ak-hidden">
+              {day.toFormat("MMM")}
+            </div>
           )}
-          <div className="lg:hidden mr-1">{day.toFormat("ccc")}</div>
+          <div className="ak-mr-1 lg:ak-hidden">{day.toFormat("ccc")}</div>
           <div
             className={classNames(
+              "ak-text-xxs ak-tracking-wide ak-tabular-nums",
               isToday &&
-                "bg-blue-600 text-white w-6 h-6 flex rounded-full items-center justify-center"
+                "ak-bg-blue-600 ak-text-white ak-w-6 ak-h-6 ak-flex ak-rounded-full ak-items-center ak-justify-center"
             )}
           >
             {day.day}
           </div>
         </div>
       </div>
-      <div className={classNames(isPast && "opacity-50")}>
-        {calendar.renderDay(day)}
+      <div className={classNames("flex-grow", isPast && "ak-opacity-50")}>
+        {calendar.renderDay({
+          day,
+          events: calendar.events[day.toISODate()],
+          maxEventsPerLine: calendar.maxEventsPerLine,
+        })}
       </div>
     </GridCell>
   );

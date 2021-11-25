@@ -1,6 +1,7 @@
 
 Todo:
   ✔ extract CSS and import it @done(21-11-17 16:46)
+  ☐ fix h-screen on example on ios (h-screen doesn't work, h-full + flex it is)
   ☐ Implement on TurnShift and see all problems
 
   ☐ Do we need to handle timezones?

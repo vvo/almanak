@@ -24,8 +24,8 @@ export default function Row({
     <GridRow
       {...grid}
       className={classNames(
-        "grid grid-cols-2 lg:grid-cols-7 h-full divide-x",
-        isFirstRow && "border-t border-transparent"
+        "ak-grid ak-grid-cols-2 lg:ak-grid-cols-7 ak-h-full ak-divide-x",
+        isFirstRow && "ak-border-t ak-border-transparent"
       )}
     >
       {days.map((day, dayIndex) => {

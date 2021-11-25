@@ -7,9 +7,9 @@ export default function TodayButton({ ...calendar }: CalendarState) {
     <Button
       onClick={() => {
         calendar.setCurrentDay(new Date());
-        calendar.scrollToToday(true);
+        calendar.scrollToToday();
       }}
-      className="inline-flex items-center py-2 px-3 text-sm font-medium leading-4 text-gray-700 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-sm focus:outline-none"
+      className="ak-items-center ak-py-2 ak-px-3 ak-text-sm ak-font-medium ak-leading-4 ak-text-gray-700 ak-bg-white hover:ak-bg-gray-50 ak-rounded-md ak-border ak-border-gray-300 focus:ak-ring-2 focus:ak-ring-indigo-500 focus:ak-ring-offset-2 ak-shadow-sm focus:ak-outline-none ak-inline-flex"
     >
       Today
     </Button>
