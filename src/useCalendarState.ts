@@ -1,6 +1,7 @@
 import { DateTime, Interval } from "luxon";
 
 import { useEffect, useRef, useState } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 
 const rageClickInterval = 500;
 
@@ -43,7 +44,9 @@ export function useCalendarState<T = unknown>({
   );
   const [lastClick, setLastClick] = useState(Date.now());
   const [fastClick, setFastClick] = useState(false);
-  const [updateRequired, setUpdateRequired] = useState(false);
+  const [updateRequired, setUpdateRequired] = useState<"prev" | "next" | false>(
+    false
+  );
 
   const [scrollToTodayRequired, setScrollToTodayRequired] = useState(false);
 
@@ -62,7 +65,9 @@ export function useCalendarState<T = unknown>({
         numberOfWeeksThisMonth * 28; // Day number;
 
       const dayHeight = height / numberOfWeeksThisMonth;
-      setMaxEventsPerLine(Math.floor(dayHeight / 20 - 1));
+      requestAnimationFrame(() => {
+        setMaxEventsPerLine(Math.floor(dayHeight / 20 - 1));
+      });
     }
   }, [currentDay]);
 
@@ -87,6 +92,20 @@ export function useCalendarState<T = unknown>({
   }, [scrollToTodayRequired, todayRef.current]);
 
   useEffect(() => {
+    let timer!: ReturnType<typeof setTimeout>;
+    if (fastClick === true) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setFastClick(false);
+      }, rageClickInterval);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [fastClick]);
+
+  useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       const numberOfWeeksThisMonth = Interval.fromDateTimes(
         currentDay.startOf("month").startOf("week").startOf("day"),
@@ -99,7 +118,9 @@ export function useCalendarState<T = unknown>({
         numberOfWeeksThisMonth * 28; // Day number;
 
       const dayHeight = height / numberOfWeeksThisMonth;
-      setMaxEventsPerLine(Math.floor(dayHeight / 20 - 1));
+      requestAnimationFrame(() => {
+        setMaxEventsPerLine(Math.floor(dayHeight / 20 - 1));
+      });
     });
 
     if (scrollRef.current) {
@@ -115,47 +136,62 @@ export function useCalendarState<T = unknown>({
     currentDay,
     previousDay,
     setCurrentDay(date: Date) {
-      setInternalPreviousDay(currentDay);
+      unstable_batchedUpdates(() => {
+        setInternalPreviousDay(currentDay);
 
-      const newDate = DateTime.fromJSDate(date);
+        const newDate = DateTime.fromJSDate(date);
 
-      if (newDate.startOf("day").hasSame(currentDay.startOf("day"), "month")) {
-        return;
-      }
+        if (
+          newDate.startOf("day").hasSame(currentDay.startOf("day"), "month")
+        ) {
+          return;
+        }
 
-      setInternalCurrentDay(newDate);
-      const clickDiff = Date.now() - lastClick;
-      if (clickDiff < rageClickInterval) {
-        setFastClick(true);
-      } else {
-        setFastClick(false);
-        setUpdateRequired(true);
-      }
-      setLastClick(Date.now());
+        const clickDiff = Date.now() - lastClick;
+        if (clickDiff < rageClickInterval) {
+          setFastClick(true);
+          setUpdateRequired(false);
+        } else {
+          setFastClick(false);
+          if (newDate > currentDay) {
+            setUpdateRequired("next");
+          } else {
+            setUpdateRequired("prev");
+          }
+        }
+        setLastClick(Date.now());
+        setInternalCurrentDay(newDate);
+      });
     },
     nextMonth() {
-      setInternalPreviousDay(currentDay);
-      setInternalCurrentDay(currentDay.plus({ months: 1 }));
-      const clickDiff = Date.now() - lastClick;
-      if (clickDiff < rageClickInterval) {
-        setFastClick(true);
-      } else {
-        setFastClick(false);
-        setUpdateRequired(true);
-      }
-      setLastClick(Date.now());
+      unstable_batchedUpdates(() => {
+        setInternalPreviousDay(currentDay);
+        setInternalCurrentDay(currentDay.plus({ months: 1 }));
+        const clickDiff = Date.now() - lastClick;
+        if (clickDiff < rageClickInterval) {
+          setFastClick(true);
+          setUpdateRequired(false);
+        } else {
+          setFastClick(false);
+          setUpdateRequired("next");
+        }
+        setLastClick(Date.now());
+      });
     },
     prevMonth() {
-      setInternalPreviousDay(currentDay);
-      setInternalCurrentDay(currentDay.minus({ months: 1 }));
-      const clickDiff = Date.now() - lastClick;
-      if (clickDiff < rageClickInterval) {
-        setFastClick(true);
-      } else {
-        setFastClick(false);
-        setUpdateRequired(true);
-      }
-      setLastClick(Date.now());
+      unstable_batchedUpdates(() => {
+        setInternalPreviousDay(currentDay);
+        setInternalCurrentDay(currentDay.minus({ months: 1 }));
+        const clickDiff = Date.now() - lastClick;
+        if (clickDiff < rageClickInterval) {
+          setFastClick(true);
+          setUpdateRequired(false);
+        } else {
+          setFastClick(false);
+          setUpdateRequired("prev");
+        }
+        setLastClick(Date.now());
+      });
     },
     scrollToToday() {
       setScrollToTodayRequired(true);
@@ -183,8 +219,8 @@ export function useCalendarState<T = unknown>({
               behavior: "smooth",
             });
           }
+          setScrollToTodayRequired(false);
         });
-        setScrollToTodayRequired(false);
       }
     },
     __scrollRef: scrollRef,

@@ -1,7 +1,6 @@
 import React from "react";
 import "tailwindcss/tailwind.css";
 import { Transition } from "@headlessui/react";
-
 import type { DateTime } from "luxon";
 import {
   unstable_Grid as Grid,
@@ -25,28 +24,45 @@ export function Calendar({ ...calendar }: CalendarState) {
       ) : (
         <>
           <Transition
-            show={!calendar.__updateRequired}
-            className="ak-z-10 ak-flex-col ak-flex-1 ak-bg-white ak-transition-opacity ak-duration-150 ak-relative ak-flex"
-            leaveFrom="ak-opacity-100"
+            show={calendar.__updateRequired === false}
+            className="ak-z-20 ak-flex-col ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
+            leave="ak-transition-opacity ak-duration-200"
+            leaveFrom="ak-opacity-80"
             leaveTo="ak-opacity-0"
-            afterLeave={() => {
-              calendar.__updateDone();
+            style={{
+              willChange: "opacity",
             }}
+            appear
             unmount={false}
           >
             <CalendarGrid
               {...calendar}
               setTodayRef={true}
               currentDay={
-                calendar.__updateRequired
+                calendar.__updateRequired !== false
                   ? calendar.previousDay
                   : calendar.currentDay
               }
             />
           </Transition>
-          <div className="ak-inset-0 ak-flex-col ak-flex ak-absolute z-0">
+          <Transition
+            show={calendar.__updateRequired !== false}
+            className="ak-inset-0 ak-z-10 ak-flex-col ak-bg-white ak-flex ak-absolute"
+            enter="ak-transition ak-transform-gpu ak-duration-150 ak-ease-in-out"
+            enterFrom={
+              calendar.__updateRequired === "prev"
+                ? "ak--translate-x-12 ak-opacity-20"
+                : "ak-translate-x-12 ak-opacity-20"
+            }
+            enterTo="ak-translate-x-[-0.1px] ak-opacity-100"
+            afterEnter={() => {
+              calendar.__updateDone();
+            }}
+            style={{ willChange: "transform,opacity" }}
+            unmount={false}
+          >
             <CalendarGrid {...calendar} />
-          </div>
+          </Transition>
         </>
       )}
     </div>
