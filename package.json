@@ -1,10 +1,18 @@
 {
   "name": "almanak",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Advanced JavaScript calendar",
   "license": "MIT",
   "author": "Vincent Voyer <vincent@codeagain.com>",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"
@@ -108,8 +116,9 @@
     "sourcemap": true,
     "clean": true,
     "dts": true,
-    "target": "es2020",
+    "target": "es2019",
     "format": [
+      "esm",
       "cjs"
     ]
   }

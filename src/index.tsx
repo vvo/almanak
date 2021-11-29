@@ -27,7 +27,7 @@ export function Calendar({ ...calendar }: CalendarState) {
             show={calendar.__updateRequired === false}
             className="ak-z-20 ak-flex-col ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
             leave="ak-transition-opacity ak-duration-200"
-            leaveFrom="ak-opacity-80"
+            leaveFrom="ak-opacity-50"
             leaveTo="ak-opacity-0"
             style={{
               willChange: "opacity",
@@ -51,8 +51,8 @@ export function Calendar({ ...calendar }: CalendarState) {
             enter="ak-transition ak-transform-gpu ak-duration-150 ak-ease-in-out"
             enterFrom={
               calendar.__updateRequired === "prev"
-                ? "ak--translate-x-12 ak-opacity-20"
-                : "ak-translate-x-12 ak-opacity-20"
+                ? "ak--translate-x-10 ak-opacity-20"
+                : "ak-translate-x-10 ak-opacity-20"
             }
             enterTo="ak-translate-x-[-0.1px] ak-opacity-100"
             afterEnter={() => {
@@ -94,7 +94,7 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
         {[1, 2, 3, 4, 5, 6, 7].map((weekday, weekdayIndex) => {
           return (
             <div key={weekdayIndex}>
-              <DayName day={calendar.currentDay.set({ weekday })} />
+              <DayName day={rangeStart.set({ weekday })} {...calendar} />
             </div>
           );
         })}

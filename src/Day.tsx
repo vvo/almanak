@@ -16,19 +16,26 @@ export default function Day({
   setTodayRef,
   ...calendar
 }: CalendarState & {
-  grid: GridStateReturn;
   day: DateTime;
+  grid: GridStateReturn;
   isFirstRow: boolean;
   setTodayRef?: boolean;
 }) {
-  const today = DateTime.local().startOf("day");
   const isFirstDay = day.day === 1;
-  const isToday = day.startOf("day").equals(today);
   const isDifferentMonth = !day.hasSame(calendar.currentDay, "month");
-  const isPast = day < today;
+  const isPast = day < calendar.today;
+  const isToday = calendar.dateIsToday(day);
 
   return (
-    <GridCell {...grid} as="div" className="ak-flex-col ak-h-full ak-flex">
+    <GridCell
+      {...grid}
+      as="div"
+      className={classNames(
+        "ak-flex-col ak-h-full ak-flex",
+        isToday && "ak-bg-yellow-50",
+        isFirstRow && "ak-pt-[3px]"
+      )}
+    >
       <div
         className={classNames(
           "ak-flex ak-justify-center ak-items-center ak-mb-1 ak-h-7 ak-text-xs ak-font-medium ak-text-center",
@@ -66,7 +73,7 @@ export default function Day({
         {calendar.renderDay({
           day,
           events: calendar.events[day.toISODate()],
-          maxEventsPerLine: calendar.maxEventsPerLine,
+          calendar,
         })}
       </div>
     </GridCell>

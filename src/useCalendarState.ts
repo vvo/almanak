@@ -8,10 +8,10 @@ const rageClickInterval = 500;
 type RenderDay<T = unknown> = ({
   day,
   events,
-  maxEventsPerLine,
+  calendar,
 }: {
   day: DateTime;
-  maxEventsPerLine: number;
+  calendar: ReturnType<typeof useCalendarState>;
   events: T[];
 }) => JSX.Element | null;
 
@@ -28,6 +28,7 @@ export function useCalendarState<T = unknown>({
   renderDay: RenderDay<T>;
   events: Record<string, T[]>;
 }) {
+  const today = DateTime.local().startOf("day");
   const scrollRef = useRef<HTMLDivElement>(null);
   const todayRef = useRef<HTMLDivElement>(null);
   const [currentDay, setInternalCurrentDay] = useState(
@@ -135,6 +136,7 @@ export function useCalendarState<T = unknown>({
   return {
     currentDay,
     previousDay,
+    today,
     setCurrentDay(date: Date) {
       unstable_batchedUpdates(() => {
         setInternalPreviousDay(currentDay);
@@ -207,6 +209,15 @@ export function useCalendarState<T = unknown>({
     },
     events,
     maxEventsPerLine,
+    dateIsToday(date: DateTime) {
+      return date.startOf("day").equals(today);
+    },
+    dateIsCurrentMonth(date: DateTime) {
+      return date.hasSame(today, "month");
+    },
+    dateIsCurrentWeekday(date: DateTime) {
+      return date.weekday === today.weekday && date.hasSame(today, "month");
+    },
     renderDay,
     fastClick,
     __updateRequired: updateRequired,
