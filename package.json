@@ -1,21 +1,15 @@
 {
   "name": "almanak",
-  "version": "0.0.16",
+  "version": "0.0.19",
   "description": "Advanced JavaScript calendar",
   "license": "MIT",
   "author": "Vincent Voyer <vincent@codeagain.com>",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "style.css"
   ],
   "scripts": {
     "build": "npm run build:clean && npm run build:src",
@@ -23,7 +17,8 @@
     "build:src": "tsup src/index.tsx",
     "format": "prettier --write '**/*.*' && eslint . --ext ts,tsx --fix",
     "lint": "tsc --noEmit && eslint --ext ts,tsx src/ && prettier --check '**/*.*'",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && cp dist/index.css style.css",
+    "postpublish": "rm style.css",
     "test": "npm run lint && (cd example && npm install && npm run build)",
     "watch": "npm run build:clean && concurrently \"npm:watch:*\"",
     "watch:src": "tsup src/index.tsx --watch src/"
@@ -118,7 +113,6 @@
     "dts": true,
     "target": "es2019",
     "format": [
-      "esm",
       "cjs"
     ]
   }
