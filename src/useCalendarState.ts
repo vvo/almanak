@@ -113,8 +113,12 @@ export function useCalendarState<T = unknown>({
         currentDay.endOf("month").endOf("week").plus({ days: 1 }).startOf("day")
       ).length("week");
 
+      const scrollHeight = entries[0].contentBoxSize
+        ? entries[0].contentBoxSize[0].blockSize
+        : entries[0].contentRect.height;
+
       const height =
-        entries[0].contentBoxSize[0].blockSize -
+        scrollHeight -
         22 - // MON - TUE ...
         numberOfWeeksThisMonth * 28; // Day number;
 
