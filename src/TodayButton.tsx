@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "reakit/Button";
+import { Button } from "reakit";
 import { CalendarState } from "./useCalendarState";
 
 export default function TodayButton({ ...calendar }: CalendarState) {

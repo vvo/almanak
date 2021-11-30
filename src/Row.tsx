@@ -3,7 +3,7 @@ import Day from "./Day";
 import {
   unstable_GridRow as GridRow,
   unstable_GridStateReturn as GridStateReturn,
-} from "reakit/Grid";
+} from "reakit";
 import { CalendarState } from "./useCalendarState";
 import { DateTime } from "luxon";
 import classNames from "classnames";

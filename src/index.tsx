@@ -5,7 +5,7 @@ import type { DateTime } from "luxon";
 import {
   unstable_Grid as Grid,
   unstable_useGridState as useGridState,
-} from "reakit/Grid";
+} from "reakit";
 import Row from "./Row";
 import { CalendarState } from "./useCalendarState";
 import DayName from "./DayName";

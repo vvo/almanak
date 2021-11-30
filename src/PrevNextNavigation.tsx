@@ -1,7 +1,10 @@
 import React from "react";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import { Button } from "reakit/Button";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/outline/index.js";
+import { Button } from "reakit";
 import { CalendarState } from "./useCalendarState";
 
 export default function PrevNextNavigation({ ...calendar }: CalendarState) {

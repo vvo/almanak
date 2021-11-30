@@ -3,7 +3,7 @@ import React from "react";
 import {
   unstable_GridCell as GridCell,
   unstable_GridStateReturn as GridStateReturn,
-} from "reakit/Grid";
+} from "reakit";
 import { DateTime } from "luxon";
 
 import classNames from "classnames";
