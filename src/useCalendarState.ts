@@ -76,7 +76,7 @@ export function useCalendarState<T = unknown>({
         setMaxEventsPerLine(Math.floor(165 / 20 - 1));
       });
     }
-  }, [currentDay]);
+  }, [currentDay, isLg]);
 
   // We can't just scroll to todayRef at every click on "Today"
   // Because when today is in a different month than the current one then todayRef will
@@ -97,6 +97,9 @@ export function useCalendarState<T = unknown>({
         }
       });
     }
+    // I've yet to find a better way to trigger this hook than adding todayRef.current in the deps
+    // which react says is of no use
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollToTodayRequired, todayRef.current]);
 
   useEffect(() => {
@@ -142,7 +145,7 @@ export function useCalendarState<T = unknown>({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [scrollRef.current, currentDay]);
+  }, [currentDay, isLg]);
 
   return {
     currentDay,

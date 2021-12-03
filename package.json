@@ -47,6 +47,7 @@
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
       "plugin:tailwindcss/recommended",
       "plugin:@typescript-eslint/recommended"
     ],
@@ -80,6 +81,7 @@
     "concurrently": "6.4.0",
     "eslint": "8.3.0",
     "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-react-hooks": "4.3.0",
     "eslint-plugin-tailwindcss": "1.17.2",
     "ical.js": "1.4.0",
     "postcss": "8.4.4",
