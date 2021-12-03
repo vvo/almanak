@@ -2,7 +2,7 @@ import { DateTime, Interval } from "luxon";
 
 import { useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { useMedia } from "react-use";
+import useMedia from "react-use/esm/useMedia.js";
 
 const rageClickInterval = 500;
 
