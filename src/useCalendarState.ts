@@ -2,6 +2,7 @@ import { DateTime, Interval } from "luxon";
 
 import { useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
+import { useMedia } from "react-use";
 
 const rageClickInterval = 500;
 
@@ -31,6 +32,7 @@ export function useCalendarState<T = unknown>({
   const today = DateTime.local().startOf("day");
   const scrollRef = useRef<HTMLDivElement>(null);
   const todayRef = useRef<HTMLDivElement>(null);
+  const isLg = useMedia("(min-width: 1024px)");
   const [currentDay, setInternalCurrentDay] = useState(
     DateTime.fromObject({
       year,
@@ -54,7 +56,7 @@ export function useCalendarState<T = unknown>({
   const [maxEventsPerLine, setMaxEventsPerLine] = useState(5);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    if (scrollRef.current && isLg) {
       const numberOfWeeksThisMonth = Interval.fromDateTimes(
         currentDay.startOf("month").startOf("week").startOf("day"),
         currentDay.endOf("month").endOf("week").plus({ days: 1 }).startOf("day")
@@ -68,6 +70,10 @@ export function useCalendarState<T = unknown>({
       const dayHeight = height / numberOfWeeksThisMonth;
       requestAnimationFrame(() => {
         setMaxEventsPerLine(Math.floor(dayHeight / 20 - 1));
+      });
+    } else {
+      requestAnimationFrame(() => {
+        setMaxEventsPerLine(Math.floor(165 / 20 - 1));
       });
     }
   }, [currentDay]);
@@ -130,7 +136,7 @@ export function useCalendarState<T = unknown>({
       });
     });
 
-    if (scrollRef.current) {
+    if (scrollRef.current && isLg) {
       resizeObserver.observe(scrollRef.current);
     }
 
