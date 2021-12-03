@@ -2,7 +2,7 @@ import { DateTime, Interval } from "luxon";
 
 import { useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import useMedia from "react-use/esm/useMedia.js";
+import useMedia from "./useMedia";
 
 const rageClickInterval = 500;
 
@@ -87,7 +87,6 @@ export function useCalendarState<T = unknown>({
       // We need to wrap the scroll in requestAnimationFrame because it's an animation (smooth)
       // See https://github.com/facebook/react/issues/20770
       requestAnimationFrame(() => {
-        console.log("MAYYYY??");
         if (todayRef.current) {
           todayRef.current.scrollIntoView({
             behavior: "smooth",
