@@ -81,14 +81,16 @@ export function useCalendarState<T = unknown>({
       // We need to wrap the scroll in requestAnimationFrame because it's an animation (smooth)
       // See https://github.com/facebook/react/issues/20770
       requestAnimationFrame(() => {
+        console.log("MAYYYY??");
         if (todayRef.current) {
           todayRef.current.scrollIntoView({
             behavior: "smooth",
           });
+          requestAnimationFrame(() => {
+            setScrollToTodayRequired(false);
+          });
         }
       });
-
-      setScrollToTodayRequired(false);
     }
   }, [scrollToTodayRequired, todayRef.current]);
 
@@ -218,16 +220,6 @@ export function useCalendarState<T = unknown>({
     __updateRequired: updateRequired,
     __updateDone: () => {
       setUpdateRequired(false);
-      if (scrollToTodayRequired) {
-        requestAnimationFrame(() => {
-          if (todayRef.current) {
-            todayRef.current.scrollIntoView({
-              behavior: "smooth",
-            });
-          }
-          setScrollToTodayRequired(false);
-        });
-      }
     },
     __scrollRef: scrollRef,
     __todayRef: todayRef,

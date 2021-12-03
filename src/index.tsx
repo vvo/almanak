@@ -19,64 +19,61 @@ export function Calendar({ ...calendar }: CalendarState) {
       ref={calendar.__scrollRef}
       className="lg:ak-h-full ak-overflow-x-hidden ak-flex-col lg:ak-flex-1 ak-flex ak-relative ak-z-0"
     >
-      {calendar.fastClick === true ? (
-        <CalendarGrid setTodayRef={true} {...calendar} />
-      ) : (
-        <>
-          <Transition
-            show={calendar.__updateRequired === false}
-            className="ak-z-20 ak-flex-col lg:ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
-            leave="ak-transition-opacity ak-duration-200"
-            leaveFrom="ak-opacity-50"
-            leaveTo="ak-opacity-0"
-            style={{
-              willChange: "opacity",
-            }}
-            appear
-            unmount={false}
-          >
-            <CalendarGrid
-              {...calendar}
-              setTodayRef={true}
-              currentDay={
-                calendar.__updateRequired !== false
-                  ? calendar.previousDay
-                  : calendar.currentDay
-              }
-            />
-          </Transition>
-          <Transition
-            show={calendar.__updateRequired !== false}
-            className="ak-inset-0 ak-z-10 ak-flex-col ak-bg-white ak-flex ak-absolute"
-            enter="ak-transition ak-transform-gpu ak-duration-150 ak-ease-in-out"
-            enterFrom={
-              calendar.__updateRequired === "prev"
-                ? "ak--translate-x-10 ak-opacity-20"
-                : "ak-translate-x-10 ak-opacity-20"
-            }
-            enterTo="ak-translate-x-[-0.1px] ak-opacity-100"
-            afterEnter={() => {
-              calendar.__updateDone();
-            }}
-            style={{ willChange: "transform,opacity" }}
-            unmount={false}
-          >
-            <CalendarGrid {...calendar} />
-          </Transition>
-        </>
-      )}
+      <div className="ak-hidden lg:ak-flex lg:ak-flex-1">
+        <DesktopMonthly {...calendar} />
+      </div>
+
+      <div className="lg:ak-hidden">
+        <MobileMonthly {...calendar} />
+      </div>
     </div>
   );
 }
 
-function CalendarGrid({
-  setTodayRef,
-  ...calendar
-}: { setTodayRef?: boolean } & CalendarState) {
-  return (
+function DesktopMonthly({ ...calendar }: CalendarState) {
+  return calendar.fastClick === true ? (
+    <DesktopMonthlyGrid {...calendar} />
+  ) : (
     <>
-      <MobileMonthlyGrid setTodayRef={setTodayRef} {...calendar} />
-      <DesktopMonthlyGrid {...calendar} />
+      <Transition
+        show={calendar.__updateRequired === false}
+        className="ak-z-20 ak-flex-col lg:ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
+        leave="ak-transition-opacity ak-duration-200"
+        leaveFrom="ak-opacity-50"
+        leaveTo="ak-opacity-0"
+        style={{
+          willChange: "opacity",
+        }}
+        appear
+        unmount={false}
+      >
+        <DesktopMonthlyGrid
+          {...calendar}
+          currentDay={
+            calendar.__updateRequired !== false
+              ? calendar.previousDay
+              : calendar.currentDay
+          }
+        />
+      </Transition>
+      <Transition
+        show={calendar.__updateRequired !== false}
+        className="ak-inset-0 ak-z-10 ak-flex-col ak-bg-white ak-flex ak-absolute"
+        enter="ak-transition ak-transform-gpu ak-duration-150 ak-ease-in-out"
+        enterFrom={
+          calendar.__updateRequired === "prev"
+            ? "ak--translate-x-10 ak-opacity-20"
+            : "ak-translate-x-10 ak-opacity-20"
+        }
+        enterTo="ak-translate-x-[-0.1px] ak-opacity-100"
+        afterEnter={() => {
+          calendar.__updateDone();
+        }}
+        style={{ willChange: "transform,opacity" }}
+        unmount={false}
+      >
+        <DesktopMonthlyGrid {...calendar} />
+      </Transition>
     </>
   );
 }
@@ -110,10 +107,7 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
   );
 }
 
-function MobileMonthlyGrid({
-  setTodayRef,
-  ...calendar
-}: { setTodayRef?: boolean } & CalendarState) {
+function MobileMonthly({ ...calendar }: CalendarState) {
   const rangeStart = calendar.currentDay.startOf("month");
   const rangeEnd =
     calendar.currentDay.endOf("month").day % 2 === 1
@@ -127,7 +121,7 @@ function MobileMonthlyGrid({
         rangeStart={rangeStart}
         rangeEnd={rangeEnd}
         rowHeight="200px"
-        setTodayRef={setTodayRef}
+        setTodayRef
         {...calendar}
       />
     </div>
@@ -139,7 +133,7 @@ function MonthlyGrid({
   rangeEnd,
   colNumber,
   rowHeight,
-  setTodayRef,
+  setTodayRef = false,
   ...calendar
 }: {
   rangeStart: DateTime;
