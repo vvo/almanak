@@ -19,7 +19,7 @@ export function Calendar({ ...calendar }: CalendarState) {
       ref={calendar.__scrollRef}
       className="lg:ak-h-full ak-overflow-x-hidden ak-flex-col lg:ak-flex-1 ak-flex ak-relative ak-z-0"
     >
-      <div className="ak-hidden lg:ak-flex lg:ak-flex-1">
+      <div className="ak-hidden lg:ak-flex lg:ak-flex-col lg:ak-flex-1 ak-h-full">
         <DesktopMonthly {...calendar} />
       </div>
 
