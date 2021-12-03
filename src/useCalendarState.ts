@@ -120,7 +120,7 @@ export function useCalendarState<T = unknown>({
       const height =
         scrollHeight -
         22 - // MON - TUE ...
-        numberOfWeeksThisMonth * 28; // Day number;
+        numberOfWeeksThisMonth * 32; // Day number;
 
       const dayHeight = height / numberOfWeeksThisMonth;
       requestAnimationFrame(() => {
@@ -201,15 +201,6 @@ export function useCalendarState<T = unknown>({
     },
     scrollToToday() {
       setScrollToTodayRequired(true);
-    },
-    scrollToTop() {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
-      }
     },
     events,
     maxEventsPerLine,

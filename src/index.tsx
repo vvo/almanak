@@ -17,7 +17,7 @@ export function Calendar({ ...calendar }: CalendarState) {
   return (
     <div
       ref={calendar.__scrollRef}
-      className="lg:ak-overflow-hidden ak-overflow-y-scroll ak-flex-col lg:ak-flex-1 ak-h-full lg:ak-h-auto ak-flex ak-relative"
+      className="lg:ak-h-full ak-overflow-x-hidden ak-flex-col lg:ak-flex-1 ak-flex ak-relative ak-z-0"
     >
       {calendar.fastClick === true ? (
         <CalendarGrid setTodayRef={true} {...calendar} />
@@ -25,7 +25,7 @@ export function Calendar({ ...calendar }: CalendarState) {
         <>
           <Transition
             show={calendar.__updateRequired === false}
-            className="ak-z-20 ak-flex-col ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
+            className="ak-z-20 ak-flex-col lg:ak-flex-1 ak-bg-white ak-ease-linear ak-relative ak-flex"
             leave="ak-transition-opacity ak-duration-200"
             leaveFrom="ak-opacity-50"
             leaveTo="ak-opacity-0"
@@ -89,7 +89,7 @@ function DesktopMonthlyGrid({ ...calendar }: CalendarState) {
   const rowHeight = `${100 / numberOfWeeks}%`;
 
   return (
-    <div className="ak-flex-col ak-h-full ak-hidden lg:ak-flex">
+    <div className="ak-flex-col lg:ak-h-full ak-hidden lg:ak-flex">
       <div className="ak-grid-cols-7 ak-divide-x ak-grid">
         {[1, 2, 3, 4, 5, 6, 7].map((weekday, weekdayIndex) => {
           return (
@@ -169,7 +169,8 @@ function MonthlyGrid({
     <Grid
       {...grid}
       aria-label="Days of the month"
-      className="ak-overflow-hidden ak-flex-1 ak-divide-y"
+      // className="ak-overflow-hidden ak-flex-1 ak-divide-y"
+      className="ak-flex-1 ak-divide-y"
     >
       {range.map((days, rowIndex) => {
         const isFirstRow = rowIndex === 0;
@@ -177,7 +178,7 @@ function MonthlyGrid({
         return (
           <div
             style={{ height: rowHeight }}
-            className="ak-overflow-hidden"
+            // className="ak-overflow-hidden"
             key={rowIndex}
           >
             <Row

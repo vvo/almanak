@@ -31,20 +31,17 @@ export default function Day({
       {...grid}
       as="div"
       className={classNames(
-        "ak-flex-col ak-h-full ak-flex",
+        "ak-flex-col lg:ak-flex-1 lg:ak-h-full ak-flex",
         isToday && "ak-bg-yellow-50",
         isFirstRow && "ak-pt-[3px]"
       )}
+      ref={isToday && setTodayRef ? calendar.__todayRef : null}
     >
       <div
         className={classNames(
           "ak-flex ak-justify-center ak-items-center ak-mb-1 ak-h-7 ak-text-xs ak-font-medium ak-text-center",
           !isFirstRow && "ak-mt-0.5"
         )}
-        ref={isToday && setTodayRef ? calendar.__todayRef : null}
-        style={{
-          scrollMarginTop: "2px",
-        }}
       >
         <div
           className={classNames(

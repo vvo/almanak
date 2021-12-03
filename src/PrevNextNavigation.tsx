@@ -9,24 +9,22 @@ import { CalendarState } from "./useCalendarState";
 
 export default function PrevNextNavigation({ ...calendar }: CalendarState) {
   return (
-    <div className="flex space-x-2 text-gray-600">
+    <div className="ak-flex ak-text-gray-600 sm:ak-space-x-2 ak-space-x-1.5">
       <Button
         onClick={() => {
           calendar.prevMonth();
-          calendar.scrollToTop();
         }}
         className="ak-justify-center ak-items-center ak-p-1 hover:ak-bg-gray-100 ak-rounded-full ak-flex"
       >
-        <ChevronLeftIcon className="h-5" />
+        <ChevronLeftIcon className="ak-h-5" />
       </Button>
       <Button
         onClick={() => {
           calendar.nextMonth();
-          calendar.scrollToTop();
         }}
         className="ak-justify-center ak-items-center ak-p-1 hover:ak-bg-gray-100 ak-rounded-full ak-flex"
       >
-        <ChevronRightIcon className="h-5" />
+        <ChevronRightIcon className="ak-h-5" />
       </Button>
     </div>
   );
